@@ -11,7 +11,7 @@ To reproduce the error make sure you have Tensorflow 2.2 installed and run
 
 and observe the network does not learn. 
 If you keep the seed fixed at 23 and change 
-the target shift to 0.0 the network goes back to learning.
+the shift to `--shift 0.0` the network goes back to learning.
 
 The data were simulated by running 
 
