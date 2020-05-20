@@ -13,12 +13,11 @@ import numpy as np
 
 # get target shift and seed number
 parser = argparse.ArgumentParser()
-parser.add_argument('--target_shift', 
-        help='amount to element-wise add to targets')
+parser.add_argument('--shift', help='amount to element-wise add to targets')
 parser.add_argument('--seed', help='tensorflow seed to use')
 args = parser.parse_args()
 
-target_shift = float(args.target_shift)
+shift = float(args.shift)
 seed = int(args.seed)
 
 
@@ -31,7 +30,7 @@ data_file.close()
 
 # DEFINE MODEL PARAMETERS
 in_units = data[0].shape[1]
-out_units = data[1].shape[1]
+out_units = 1
 design = {'unit_activations':[(in_units, 'relu'),
                               (70, 'relu'),
                               (40, 'relu'),
@@ -69,10 +68,11 @@ def train_encoder(design, data):
     model.summary()
 
     # shift targets
-    shifted_targets = data[1] + target_shift
+    shifted_targets = data[1] + shift
+    shifted_inputs = data[0] + shift
 
     # train model
-    model.fit(x=data[0], y=shifted_targets,
+    model.fit(x=shifted_inputs, y=shifted_targets,
               batch_size=batch_size,
               epochs=epochs,
               verbose=2)

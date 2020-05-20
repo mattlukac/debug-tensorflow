@@ -12,7 +12,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--seed', help='numpy seed to use')
 args = parser.parse_args()
 
-seed = args.seed
+seed = int(args.seed)
 np.random.seed(seed)
 
 ## DOMAIN 
@@ -34,7 +34,7 @@ def simulate_data(replicates):
     u_shape = (replicates, ) + x.shape 
     u = np.zeros(u_shape)
     var = simulate_variance(replicates)
-    var = var.reshape(replicates, 1)
+#    var = var.reshape(replicates, 1)
     for replicate, v in enumerate(var):
         u[replicate] = simulate_u(v)
 
@@ -44,10 +44,9 @@ def simulate_data(replicates):
 ## check shapes
 inputs, targets = simulate_data(2000)
 assert inputs.ndim == 2
-assert targets.ndim == 2
 assert inputs.shape[0] == targets.shape[0]
 assert inputs.shape[1] == len(domain())
-assert targets.shape[1] == 1
+#assert targets.shape[1] == 1
 
 ## save data
 data = (inputs, targets)
