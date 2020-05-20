@@ -27,13 +27,15 @@ data_file.close()
 # the input has shape (N, 200) and the targets have shape (N, 1)
 x = data[0]
 y = data[1]
-print('x y shape', x.shape, y.shape)
 normalizer = Normalizer()
 minmaxscaler = MinMaxScaler()
 x = normalizer.fit_transform(x)
 y = minmaxscaler.fit_transform(y)
-x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2)
-print('train test x y shape', x_train.shape, x_test.shape, y_train.shape, y_test.shape)
+x_train, x_test, y_train, y_test = train_test_split(
+        x, 
+        y, 
+        test_size=0.2,
+        random_state=23)
 
 
 # DEFINE MODEL PARAMETERS
@@ -82,7 +84,3 @@ def train_encoder(design, data):
 # TRAIN MODEL
 set_seed(seed) 
 model = train_encoder(design, data=(x_train, y_train))
-y_pred = model.predict(x_test)
-print(y_pred[0:10] - y_test[0:10])
-#print('mean predictions', np.mean(target_pred))
-#print('predictions variance', np.var(target_pred))
