@@ -1,5 +1,4 @@
 import numpy as np
-import pickle
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '1'
 import tensorflow as tf 
@@ -17,9 +16,9 @@ y = np.random.uniform(0.1, 1.0, size=n_samples)
 for idx in range(n_samples):
     x[idx] *= y[idx]
 print('check constants:')
-print('  x1', x[0])
+print('  x1\n', x[0, 0:10])
 print('  y1', y[0])
-print('  x2', x[1])
+print('  x2\n', x[1, 0:10])
 print('  y2', y[1])
 
 x_train, x_test, y_train, y_test = train_test_split(
@@ -39,4 +38,4 @@ model.add(tf.keras.layers.Dense(12, activation='relu'))
 model.add(tf.keras.layers.Dense(1, activation='relu'))
 
 model.compile(loss='mse', optimizer='adam')
-model.fit(x_train, y_train, epochs=15, batch_size=25)
+model.fit(x_train, y_train, epochs=15, batch_size=300)
