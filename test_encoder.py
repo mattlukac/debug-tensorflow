@@ -13,11 +13,9 @@ import numpy as np
 
 # get target shift and seed number
 parser = argparse.ArgumentParser()
-parser.add_argument('--shift', help='amount to element-wise add to targets')
 parser.add_argument('--seed', help='tensorflow seed to use')
 args = parser.parse_args()
 
-shift = float(args.shift)
 seed = int(args.seed)
 
 
@@ -67,12 +65,11 @@ def train_encoder(design, data):
     model.compile(optimizer=optim, loss=loss)
     model.summary()
 
-    # shift targets
-    shifted_targets = data[1] + shift
-    shifted_inputs = data[0] + shift
+    # map targets to unit interval
+    normed_targets = (data[1] - np.min(data[1])) / np.ptp(data[1])
 
     # train model
-    model.fit(x=shifted_inputs, y=shifted_targets,
+    model.fit(x=data[0], y=normed_targets,
               batch_size=batch_size,
               epochs=epochs,
               verbose=2)

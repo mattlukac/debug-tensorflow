@@ -22,7 +22,7 @@ def domain():
 ## SOLUTION
 def simulate_u(var):
     x = domain()
-    return np.exp(-x**2 / (2*var))/np.sqrt(2 * np.pi * var)
+    return np.exp(-x**2 / (2*var))/np.sqrt(2 * np.pi * var) + 1.0
 
 ## VARIANCE REPLICATES
 def simulate_variance(replicates):
