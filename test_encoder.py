@@ -48,7 +48,7 @@ design = {'unit_activations':[(in_units, 'relu'),
           'optimizer':'adam',
           'loss':'mse',
           'batch_size':25,
-          'epochs':100,
+          'epochs':10,
          }
 
 # CONSTRUCT FEED-FORWARD NETWORK

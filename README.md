@@ -1,20 +1,19 @@
-# Stochastic Failure of a Feed-Forward Network
-Here is some unexpected behavior in `tensorflow.keras`.
-The data are pickled in `data.pkl` which contains the tuple `(inputs, targets)`
-where `inputs` is a numpy array of shape (2000, 200)
-and `targets` is a numpy array of shape (2000, 1).
-Here, the `targets` are variances for the `inputs`, which represent
-normal distributions (with mean 0) on the interval [-1,1].
-If we normalize the targets so they are contained in the unit interval,
-and set the tensorflow seed to 23, the network will not learn anything.
+# When keeping it ReLU goes wrong
+Here I argue that using ReLU activations is not wise when
+the goal is to train a neural network to approximate a real-valued
+function. This is demonstrated in the `relu_pitfalls.ipynb` file.
 
-To reproduce the behavior make sure you have Tensorflow 2.2 installed and run
+Consider a feed-forward network with a single hidden layer,
+containing n hidden units. If there is a single input node
+and the bias vectors are initialized to zero, there are cases where
+the initialized weight matrices (in this case they are column and row vectors)
+will result in no activation in the final layer, thus preventing the 
+network from learning. In this setting the main case to consider is 
+whether or not the angle between the weight vectors is acute or not.
 
-`python test_encoder.py --seed 23`
-
-and observe the network does not learn. 
-If instead you use the flag `--seed 666` the network goes back to learning.
-
-The data were simulated by running 
-
-`python make_data.py --seed 23`
+Assuming all inputs are positive and the two activation functions 
+are the identity map f(x) = x, the final node will be proportional
+to the dot product of the weight vectors. So if we have ReLU activations
+and all hidden units are activated, but the weight vectors have an
+obtuse angle between them in n-dimensional space, then the final unit
+will never be activated, thus impeding the learning process of the neural net.
